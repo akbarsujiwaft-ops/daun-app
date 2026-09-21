@@ -2,18 +2,35 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 from PIL import Image
+import gdown  # Tambahan untuk download dari Google Drive
+import os     # Tambahan untuk mengecek ketersediaan file
 
 # 1. Mengatur tampilan halaman program
 st.set_page_config(page_title="Identifikasi Penyakit Daun", layout="centered")
 st.title("🌿 Program Identifikasi Penyakit Daun")
 st.write("Unggah gambar daun untuk mendeteksi apakah daun tersebut sehat, terkena bacterial spot, atau early blight.")
 
-# 2. Fungsi untuk memuat model (menggunakan cache agar program tidak lambat)
+# 2. Fungsi untuk memuat model dari Google Drive (menggunakan cache)
 @st.cache_resource
 def load_model():
-    # Pastikan nama file model sesuai dengan yang Anda simpan sebelumnya
-    return tf.keras.models.load_model('model_klasifikasi_daun.keras')
+    # --- BAGIAN BARU: DOWNLOAD DARI GOOGLE DRIVE ---
+    # File ID yang sudah diambil dari link Google Drive Anda
+    file_id = '1QfUW9mgDTOSXGMVyXuTDP8YT_qde1APu' 
+    url = f'https://drive.google.com/uc?id={file_id}'
+    
+    # Nama file tempat model akan disimpan sementara di server Streamlit
+    model_path = 'model_klasifikasi_daun.keras'
+    
+    # Mengecek apakah model sudah didownload sebelumnya
+    if not os.path.exists(model_path):
+        with st.spinner("Sedang mengunduh model dari sistem... Mohon tunggu sebentar (hanya pada saat pertama kali)"):
+            gdown.download(url, model_path, quiet=False)
+    # -----------------------------------------------
 
+    # Memuat model yang sudah ada (atau baru saja di-download)
+    return tf.keras.models.load_model(model_path)
+
+# Memanggil fungsi model
 model = load_model()
 class_names = ['bacterial_spot', 'early_blight', 'sehat']
 
