@@ -7,7 +7,7 @@ import os     # Tambahan untuk mengecek ketersediaan file
 
 # 1. Mengatur tampilan halaman program
 st.set_page_config(page_title="Identifikasi Penyakit Daun", layout="centered")
-st.title("🌿 Program Identifikasi Penyakit Daun  🪴")
+st.title("🌿 Program Identifikasi Penyakit Daun  🪴🇮🇩")
 st.write("Unggah gambar daun ☘️ untuk mendeteksi apakah daun tersebut sehat 🍃, terkena bacterial spot 🥬, atau early blight 🍂.")
 
 # 2. Fungsi untuk memuat model dari Google Drive (menggunakan cache)
